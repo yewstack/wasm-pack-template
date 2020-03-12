@@ -6,6 +6,12 @@ This template shows how to create a web app using Yew and wasm-pack.
 
 ## 🚴 Usage
 
+### 🛠️ Install the needed packages `yarn install`
+
+```
+yarn install
+```
+
 ### 🛠️ Build with `yarn run build`
 
 ```
@@ -23,7 +29,5 @@ yarn run start:dev
 
 * [`wasm-bindgen`](https://github.com/rustwasm/wasm-bindgen) for communicating
   between WebAssembly and JavaScript.
-* [`console_error_panic_hook`](https://github.com/rustwasm/console_error_panic_hook)
-  for logging panic messages to the developer console.
 * [`wee_alloc`](https://github.com/rustwasm/wee_alloc), an allocator optimized
   for small code size.
