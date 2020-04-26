@@ -14,8 +14,6 @@ When building for the first time, ensure to install dependencies first.
 yarn install
 ```
 
-### 🛠️ Build with `yarn run build`
-
 ```
 yarn run build
 ```
