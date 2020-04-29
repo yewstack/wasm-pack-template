@@ -16,6 +16,18 @@ module.exports = (env, argv) => {
       filename: "todomvc.js",
       webassemblyModuleFilename: "todomvc.wasm"
     },
+    module: {
+      rules: [
+        {
+          test: /\.s[ac]ss$/i,
+          use: [
+            'style-loader',
+            'css-loader',
+            'sass-loader',
+          ],
+        },
+      ],
+    },
     plugins: [
       new CopyWebpackPlugin([
         { from: './static', to: distPath }
