@@ -47,10 +47,6 @@ impl Component for App {
     type Message = Msg;
     type Properties = ();
 
-    fn change(&mut self, _: <Self as yew::html::Component>::Properties) -> bool {
-        todo!()
-    }
-
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
         let storage = StorageService::new(Area::Local).unwrap();
         let entries = {
@@ -67,6 +63,10 @@ impl Component for App {
             edit_value: "".into(),
         };
         App { link, storage, state }
+    }
+
+    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
+        false
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
