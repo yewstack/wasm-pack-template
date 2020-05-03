@@ -9,6 +9,9 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: wasm32-unknown-unknown
+      - name: Run fmt
+        run: cargo fmt -- --check
+      - name: Run clippy
+        run: cargo clippy -- --deny=warnings
       - name: Run check
         run: cargo check
