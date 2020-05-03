@@ -3,8 +3,8 @@ use serde_derive::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 use strum_macros::{EnumIter, ToString};
 use yew::format::Json;
-use yew::services::storage::{Area, StorageService};
 use yew::prelude::*;
+use yew::services::storage::{Area, StorageService};
 
 const KEY: &str = "yew.todomvc.self";
 
@@ -62,7 +62,11 @@ impl Component for App {
             value: "".into(),
             edit_value: "".into(),
         };
-        App { link, storage, state }
+        App {
+            link,
+            storage,
+            state,
+        }
     }
 
     fn change(&mut self, _props: Self::Properties) -> ShouldRender {
@@ -159,7 +163,6 @@ impl Component for App {
     }
 }
 
-
 impl App {
     fn view_filter(&self, filter: Filter) -> Html {
         let flt = filter.clone();
@@ -233,8 +236,6 @@ impl App {
         }
     }
 }
-
-
 
 #[derive(EnumIter, ToString, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Filter {
