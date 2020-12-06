@@ -28,10 +28,16 @@ module.exports = (env, argv) => {
         },
       ],
     },
+    experiments: {
+      syncWebAssembly: true,
+      //asyncWebAssembly: true, // TODO
+    },
     plugins: [
-      new CopyWebpackPlugin([
-        { from: './static', to: distPath }
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: './static', to: distPath },
+        ],
+      }),
       new WasmPackPlugin({
         crateDirectory: ".",
         extraArgs: "--no-typescript",
