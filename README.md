@@ -21,7 +21,7 @@ yarn run build
 ### 🔬 Serve locally
 
 ```
-yarn run start:dev
+yarn run dev
 ```
 
 
