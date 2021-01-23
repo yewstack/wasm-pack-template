@@ -1,10 +1,10 @@
 {
   "private": true,
   "scripts": {
-    "test": "wasm-pack test --chrome --firefox --safari",
-    "dev": "webpack --mode development",
+    "dev": "webpack-dev-server --mode development --open",
     "build": "webpack --mode production",
-    "start:dev": "webpack-dev-server --mode development --open"
+    "build:dev": "webpack --mode development",
+    "test": "wasm-pack test --chrome --firefox --safari --headless",
   },
   "devDependencies": {
     "@wasm-tool/wasm-pack-plugin": "^1.3.1",
