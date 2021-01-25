@@ -6,6 +6,7 @@ const distPath = path.resolve(__dirname, "dist");
 module.exports = (env, argv) => {
   return {
     devServer: {
+      historyApiFallback: true,
       contentBase: distPath,
       compress: argv.mode === 'production',
       port: 8000
