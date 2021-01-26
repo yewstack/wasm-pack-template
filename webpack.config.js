@@ -6,16 +6,17 @@ const distPath = path.resolve(__dirname, "dist");
 module.exports = (env, argv) => {
   return {
     devServer: {
-      historyApiFallback: true,
       contentBase: distPath,
       compress: argv.mode === 'production',
-      port: 8000
+      port: 8000,
+      historyApiFallback: true
     },
     entry: './bootstrap.js',
     output: {
       path: distPath,
       filename: "todomvc.js",
-      webassemblyModuleFilename: "todomvc.wasm"
+      webassemblyModuleFilename: "todomvc.wasm",
+      publicPath: "/"
     },
     module: {
       rules: [
