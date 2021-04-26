@@ -28,6 +28,9 @@ module.exports = (env, argv) => {
         },
       ],
     },
+    experiments: {
+      asyncWebAssembly: true
+    },
     plugins: [
       new CopyWebpackPlugin({
         patterns: [
