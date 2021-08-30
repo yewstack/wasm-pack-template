@@ -8,21 +8,21 @@ edition = "2018"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-log = "0.4"
-strum = "0.19"
-strum_macros = "0.19"
-serde = "1"
-serde_derive = "1"
-wasm-bindgen = "0.2.58"
-wasm-logger = "0.2"
-wee_alloc = { version = "0.4.4", optional = true }
-yew = "0.17"
+log = "0.4.14"
+strum = "0.21.0"
+strum_macros = "0.21.1"
+serde = "1.0.130"
+serde_derive = "1.0.130"
+wasm-bindgen = "0.2.76"
+wasm-logger = "0.2.0"
+wee_alloc = { version = "0.4.5", optional = true }
+yew = "0.17.4"
 
 [dev-dependencies]
-wasm-bindgen-test = "0.3"
+wasm-bindgen-test = "0.3.26"
 
 [dependencies.web-sys]
-version = "0.3.4"
+version = "0.3.53"
 features = [
   'KeyboardEvent',
 ]
