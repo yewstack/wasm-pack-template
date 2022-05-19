@@ -1,8 +1,8 @@
 [package]
-name = "yew-wasm-pack-template"
-version = "0.2.0"
-authors = ["Yew Maintainers <maintainers@yew.rs"]
-edition = "2018"
+name = "yew-wasm-pack-tw-template"
+version = "0.1.0"
+authors = ["Konstantin <mail@vomkonstant.in"]
+edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

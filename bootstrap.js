@@ -1,5 +1,5 @@
-import './style.scss';
+import "./output.css";
 
-import("./pkg").then(module => {
+import("./pkg").then((module) => {
   module.run_app();
 });
