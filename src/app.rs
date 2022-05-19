@@ -125,38 +125,47 @@ impl Component for App {
 
     fn view(&self) -> Html {
         info!("rendered!");
+        let mut items_left_string = "".to_string();
+        let total = self.state.total();
+        if total == 1 {
+            items_left_string.push_str(" item left")
+        } else {
+            items_left_string.push_str(" items left")
+        }
         html! {
-            <div class="todomvc-wrapper">
-                <section class="todoapp">
-                    <header class="header">
-                        <h1>{ "todos" }</h1>
+            <div class="w-2/3 mx-auto">
+                <section>
+                    <header class="text-center my-4">
+                        <h1 class="text-6xl text-red-600">{ "todos" }</h1>
                         { self.view_input() }
                     </header>
-                    <section class="main">
-                        <input class="toggle-all" type="checkbox" checked=self.state.is_all_completed() onclick=self.link.callback(|_| Msg::ToggleAll) />
-                        <ul class="todo-list">
+                    <section class="my-4">
+                        <label for="toggle_all" class="block w-full rounded bg-slate-300 mb-4 p-4">
+                            <input id="toggle_all" type="checkbox" checked=self.state.is_all_completed() onclick=self.link.callback(|_| Msg::ToggleAll) />
+                        </label>
+                        <ul>
                             { for self.state.entries.iter().filter(|e| self.state.filter.fit(e))
                                 .enumerate()
                                 .map(|val| self.view_entry(val)) }
                         </ul>
                     </section>
-                    <footer class="footer">
-                        <span class="todo-count">
+                    <footer class="flex gap-3 justify-around my-4">
+                        <span class="border-2 rounded p-4">
                             <strong>{ self.state.total() }</strong>
-                            { " item(s) left" }
+                            { items_left_string }
                         </span>
-                        <ul class="filters">
+                        <ul class="flex-grow gap-3 flex justify-center">
                             { for Filter::iter().map(|flt| self.view_filter(flt)) }
                         </ul>
-                        <button class="clear-completed" onclick=self.link.callback(|_| Msg::ClearCompleted)>
+                        <button class="bg-red-300 hover:bg-red-500 hover:text-white transition-colors rounded p-4" onclick=self.link.callback(|_| Msg::ClearCompleted)>
                             { format!("Clear completed ({})", self.state.total_completed()) }
                         </button>
                     </footer>
                 </section>
-                <footer class="info">
-                    <p>{ "Double-click to edit a todo" }</p>
-                    <p>{ "Written by " }<a href="https://github.com/DenisKolodin/" target="_blank">{ "Denis Kolodin" }</a></p>
-                    <p>{ "Part of " }<a href="http://todomvc.com/" target="_blank">{ "TodoMVC" }</a></p>
+                <footer class="flex flex-col gap-3 items-center text-sm text-slate-500 my-4 mt-8">
+                    <p>{ "Double-click to edit a todo." }</p>
+                    <p>{ "Originally written by " }<a class="underline" href="https://github.com/DenisKolodin/" target="_blank">{ "Denis Kolodin" }</a>{"."}</p>
+                    <p>{ "Edited to facilitate tailwindCSS by " }<a class="underline" href="https://blog.vomkonstant.in/" target="_blank">{ "Konstantin Kovar" }</a>{"."}</p>
                 </footer>
             </div>
         }
@@ -168,7 +177,7 @@ impl App {
         let flt = filter.clone();
 
         html! {
-            <li>
+            <li class="p-4 border-2 rounded">
                 <a class=if self.state.filter == flt { "selected" } else { "not-selected" }
                    href=&flt
                    onclick=self.link.callback(move |_| Msg::SetFilter(flt.clone()))>
@@ -182,7 +191,7 @@ impl App {
         html! {
             // You can use standard Rust comments. One line:
             // <li></li>
-            <input class="new-todo"
+            <input class="p-4 w-full mt-4 border-0 border-b-2 border-slate-500 focus:border-slate-800 focus:outline-none"
                    placeholder="What needs to be done?"
                    value=&self.state.value
                    oninput=self.link.callback(|e: InputData| Msg::Update(e.value))
@@ -198,22 +207,24 @@ impl App {
     }
 
     fn view_entry(&self, (idx, entry): (usize, &Entry)) -> Html {
-        let mut class = "todo".to_string();
+        let mut label_class = "".to_string();
         if entry.editing {
-            class.push_str(" editing");
+            label_class.push_str(" hidden");
         }
         if entry.completed {
-            class.push_str(" completed");
+            label_class.push_str(" inline");
         }
 
         html! {
-            <li class=class>
-                <div class="view">
-                    <input class="toggle" type="checkbox" checked=entry.completed onclick=self.link.callback(move |_| Msg::Toggle(idx)) />
-                    <label ondblclick=self.link.callback(move |_| Msg::ToggleEdit(idx))>{ &entry.description }</label>
-                    <button class="destroy" onclick=self.link.callback(move |_| Msg::Remove(idx)) />
+            <li class="p-4 pr-0 my-2 border-b-2 border-slate-200 last:border-0">
+                <div class="flex items-center justify-between">
+                <div class="flex gap-6">
+                    <input type="checkbox" checked=entry.completed onclick=self.link.callback(move |_| Msg::Toggle(idx)) />
+                    <label class=label_class ondblclick=self.link.callback(move |_| Msg::ToggleEdit(idx))>{ &entry.description }</label>
+                    { self.view_entry_edit_input((&idx, &entry)) }
                 </div>
-                { self.view_entry_edit_input((&idx, &entry)) }
+                    <button class="bg-red-300 hover:bg-red-500 hover:text-white transition-colors rounded p-4 ml-auto" onclick=self.link.callback(move |_| Msg::Remove(idx))>{"Remove"}</button>
+                </div>
             </li>
         }
     }
@@ -222,14 +233,14 @@ impl App {
         let idx = *idx;
         if entry.editing {
             html! {
-                <input class="edit"
-                       type="text"
-                       value=&entry.description
-                       oninput=self.link.callback(move |e: InputData| Msg::UpdateEdit(e.value))
-                       onblur=self.link.callback(move |_| Msg::Edit(idx))
-                       onkeypress=self.link.callback(move |e: KeyboardEvent| {
-                          if e.key() == "Enter" { Msg::Edit(idx) } else { Msg::Nope }
-                       }) />
+                <input
+                    type="text"
+                    value=self.state.edit_value
+                    oninput=self.link.callback(move |e: InputData| Msg::UpdateEdit(e.value))
+                    onblur=self.link.callback(move |_| Msg::Edit(idx))
+                    onkeypress=self.link.callback(move |e: KeyboardEvent| {
+                        if e.key() == "Enter" { Msg::Edit(idx) } else { Msg::Nope }
+                }) />
             }
         } else {
             html! { <input type="hidden" /> }
