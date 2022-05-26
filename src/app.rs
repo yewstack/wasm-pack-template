@@ -224,7 +224,7 @@ impl App {
             html! {
                 <input class="edit"
                        type="text"
-                       value=&entry.description
+                       value=self.state.edit_value
                        oninput=self.link.callback(move |e: InputData| Msg::UpdateEdit(e.value))
                        onblur=self.link.callback(move |_| Msg::Edit(idx))
                        onkeypress=self.link.callback(move |e: KeyboardEvent| {
